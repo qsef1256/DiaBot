@@ -1,4 +1,6 @@
 # DiaBot
+![Minecraft](https://img.shields.io/badge/Minecraft-1.17.1-{brightgreen}.svg)
+
 A [mineflayer](https://github.com/PrismarineJS/mineflayer) Bot for Plugin/Skript Testing
 
 ## Feature

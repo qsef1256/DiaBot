@@ -44,12 +44,13 @@ Type without / in a whisper or console.
 | hand | hand [slot] | The bot switches the quickbar. | hotbar |
 | unequip | unequip | The bot will unequip all equipment. | - |
 | come | come | The bot will move to your location. | - |
-| follow | follow | The bot will follow you. | - |
-| stop | stop | The bot will stop following you. | unfollow |
-| fight | fight [user] | Start PvP with the entered user. | - |
-| surrender | surrender | Bots stop PvP. | sur |
+| follow [user] | follow | The bot will follow user. | - |
+| stop | stop | The bot will stop moving. | unfollow |
+| fight | fight [user] | Start PvP with the user. | - |
+| surrender | surrender | Bot will stop fighting. | sur |
 
 ## Known Issue
+* Closing the inventory is not reflected immediately. Please refresh in your browser.
 * Movement function works normally after respawning. I think it's a mineflayer bug, and it has been reported in the mineflayer repository.
 
 ## Disclaimer

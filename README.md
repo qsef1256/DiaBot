@@ -47,6 +47,9 @@ Type without / in a whisper or console.
 | fight | fight [user] | Start PvP with the entered user. | - |
 | surrender | surrender | Bots stop PvP. | sur |
 
+## Known Issue
+* Movement function works normally after respawning. I think it's a mineflayer bug, and it has been reported in the mineflayer repository.
+
 ## Disclaimer
 This bot is unstable. This bot is for developing plugins/scripts that require additional players in the development environment.
 

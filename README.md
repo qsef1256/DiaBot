@@ -36,7 +36,7 @@ Type without / in a whisper or console.
 | exit | exit | Make the bot leave the server. | quit |
 | info | info | Print the bot's information. | - |
 | chat | chat [chat] | The bot sends a chat. | - |
-| close | close | Close the bot's inventory. (It is not automatically updated on the web) | - |
+| close | close | Close the bot's inventory. <br />(It is not automatically updated on the web) | - |
 | click | click [slot] | The bot clicks on the bot's inventory. | - |
 | inv | inv [slot1] [slot2] | The bot exchanges items between the two slots. | swap |
 | hand | hand [slot] | The bot switches the quickbar. | hotbar |

@@ -1,6 +1,6 @@
 # DiaBot
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.17.1-{brightgreen}.svg)
-| <sub>EN</sub> [en-US](/readme.md) | <sub>KO</sub> [ko-KR](readme.ko-KR.md) |
+| <sub>EN</sub> [en-US](/README.md) | <sub>KO</sub> [ko-KR](README.ko-KR.md) |
 |---------------------|-----------------------|
 
 A [mineflayer](https://github.com/PrismarineJS/mineflayer) Bot for Plugin/Skript Testing

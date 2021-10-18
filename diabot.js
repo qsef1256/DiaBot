@@ -110,7 +110,7 @@ function botCommand (username, message) {
     return
   }
 
-  if (cmd == 'inv') {
+  if (cmd == 'inv' || cmd == 'swap') {
     const slotCount = bot.inventory.slots.length - 1
     if(!arg[2]) { botOutput(username, 'Move Item must be need slot and destination'); return }
     if(slotCount < arg[1] || slotCount < arg[2] || arg[1] < 0 || arg[2] < 0 ) {

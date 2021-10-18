@@ -11,6 +11,7 @@ A [mineflayer](https://github.com/PrismarineJS/mineflayer) Bot for Plugin/Skript
 * Show Bot Inventory on Web
 * Move and Follow
 * PvP
+* Please post if you need other features
 
 ## Dependency
 Node.js and Minecraft 1.17.1.

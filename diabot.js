@@ -18,7 +18,7 @@ const options = {
 
 const bot = mineflayer.createBot(options)
 const owner = 'qsef1256'
-const version = '0.45'
+const version = '0.45.1'
 
 const rl = readline.createInterface({ // 터미널 입력
   input: process.stdin,

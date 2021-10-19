@@ -19,8 +19,6 @@ const options = {
 const bot = mineflayer.createBot(options)
 const owner = 'qsef1256'
 const version = '0.45'
-const mcData = require('minecraft-data')(1.17)
-const defaultMove = new Movements(bot, mcData)
 
 const rl = readline.createInterface({ // 터미널 입력
   input: process.stdin,
@@ -40,6 +38,11 @@ inventoryViewer(bot, viewer) // 인벤토리 뷰어
 rl.on('line', (input) => {
   botCommand(console,input)
 });
+
+bot.on('inject_allowed'), () => {
+  const mcData = require('minecraft-data')(1.17)
+  const defaultMove = new Movements(bot, mcData)
+})
 
 // 에센셜 채팅 귓말
 bot.once('spawn', () => {

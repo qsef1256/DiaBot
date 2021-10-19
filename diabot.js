@@ -13,6 +13,7 @@ const options = {
   host: 'localhost',
   port: 25565,
   username: process.argv[2],
+  password: process.argv[3],
   version: "1.17.1"
 }
 
@@ -29,6 +30,7 @@ let viewer = {
   port: getRandomInt(3000,4001)
 }
 let debug = false // 디버그 모드 설정
+let mcData,defaultMove;
 
 bot.loadPlugin(pathfinder)
 bot.loadPlugin(armorManager);
@@ -40,9 +42,9 @@ rl.on('line', (input) => {
   botCommand(console,input)
 });
 
-bot.on('inject_allowed'), () => {
-  const mcData = require('minecraft-data')(1.17)
-  const defaultMove = new Movements(bot, mcData)
+bot.on('inject_allowed', () => {
+  mcData = require('minecraft-data')(1.17)
+  defaultMove = new Movements(bot, mcData)
 })
 
 // 에센셜 채팅 귓말

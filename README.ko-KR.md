@@ -24,13 +24,21 @@ Node.js와 마인크래프트 1.17.1.
 | mineflayer-pathfinder |
 | mineflayer-armor-manager |
 
-Node.js를 깐 후 cmd.exe에서 각각 패키지마다 `npm install [package]`를 입력하는 것으로 설치할 수 있습니다.
+Node.js를 깐 후 cmd.exe에서 각각 패키지마다 `npm install (package)`를 입력하는 것으로 수동 설치할 수 있습니다.
 
 ## 설치 방법
+
+### 자동 설치
+1. Node.js를 설치합니다.
+2. diabot.js와 install.bat를 원하는 위치에 다운로드 합니다.
+3. install.bat을 실행합니다.
+4. 설치가 끝난 후 같은 위치에 생성된 start.bat을 실행합니다.
+
+### 수동 설치
 1. Node.js를 깔고 필요한 패키지를 설치합니다.
 2. diabot.js를 원하는 위치에 다운로드 합니다.
-3. cmd.exe를 열고 `cd [diabot.js가 있는 경로]`를 입력합니다.
-4. cmd창에 `node diabot.js [nickname]`을 입력합니다.
+3. cmd.exe를 열고 `cd (diabot.js가 있는 경로)`를 입력합니다.
+4. cmd창에 `node diabot.js (nickname) [password]`를 입력합니다. (password는 마인크래프트 계정 없이 실행할 경우 적지 마세요.)
 
 ## 명령어
 귓속말(/w 또는 /tell 또는 /msg) 이나 터미널(cmd 창)에 / "없이" 입력하세요.
@@ -59,3 +67,5 @@ Node.js를 깐 후 cmd.exe에서 각각 패키지마다 `npm install [package]`�
 이 봇은 불안정 하며, 개발 환경에서 추가적인 플레이어가 필요할 때 쓰기 위해 만든 봇입니다.
 
 일반적인 목적으로 이 봇을 사용하지 않는 것을 권장드립니다.
+
+이 봇은 유저 이름이나 비밀번호 등의 개인정보를 수집하지 않습니다.

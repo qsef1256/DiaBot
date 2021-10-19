@@ -24,13 +24,21 @@ Node.js and Minecraft 1.17.1.
 | mineflayer-pathfinder |
 | mineflayer-armor-manager |
 
-Type `npm install [package]` in cmd.exe to install Node package
+For manual install Node packages, Type `npm install (package)` in cmd.exe.
 
 ## Install
+
+### Automatic
+1. Install Node.js
+2. Download diabot.js and install.bat
+3. Open install.bat
+4. Start start.bat when install is completed
+
+### Manual
 1. Install Node.js and require Node packages
 2. Download diabot.js
-3. Open cmd.exe and Type `cd [path of diabot.js]`
-4. Type `node diabot.js [nickname]`
+3. Open cmd.exe and Type `cd (path of diabot.js)`
+4. Type `node diabot.js (nickname) [password]` (password is for online mode, Do not enter when used in offline mode.)
 
 ## Command
 Type without / in a whisper or console.
@@ -58,3 +66,5 @@ Type without / in a whisper or console.
 This bot is unstable. This bot is for developing plugins/scripts that require additional players in the development environment.
 
 Do not use this bot for general purpose.
+
+This bot does not collect any personal information such as username or password.

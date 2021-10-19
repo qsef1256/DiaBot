@@ -28,6 +28,7 @@ const rl = readline.createInterface({ // 터미널 입력
 let viewer = {
   port: getRandomInt(3000,4001)
 }
+let debug = false // 디버그 모드 설정
 
 bot.loadPlugin(pathfinder)
 bot.loadPlugin(armorManager);
@@ -46,13 +47,22 @@ bot.on('inject_allowed'), () => {
 
 // 에센셜 채팅 귓말
 bot.once('spawn', () => {
-
+  
   bot.chatAddPattern(
     /^\[(.+) -> .+\] (.+)$/,
     'whisper'
   )
-
   bot.on('whisper', botCommand)
+  
+})
+
+/* bot.on('windowOpen', (window) => {
+  console.log("Inventory title: " + window.title)
+}) */
+
+// 디버그 정보 출력
+
+function DebugOutput() {
   bot.on('path_update', (r) => {
     const nodesPerTick = (r.visitedNodes * 50 / r.time).toFixed(2)
     console.log(`I can get there in ${r.path.length} moves. Computation took ${r.time.toFixed(2)} ms (${r.visitedNodes} nodes, ${nodesPerTick} nodes/tick)`)
@@ -65,11 +75,7 @@ bot.once('spawn', () => {
   bot.on('path_reset', (reason) => {
     console.log(`Path was reset for reason: ${reason}`)
   })
-  
-})
-/* bot.on('windowOpen', (window) => {
-  console.log("Inventory title: " + window.title)
-}) */
+}
 
 // 인게임 명령어
 function botCommand (username, message) {
@@ -189,7 +195,21 @@ function botCommand (username, message) {
     bot.pvp.stop()
     return
   }
-
+  
+  if (cmd == 'debug') {
+    if (debug) {
+      bot.removeListener('spawn', DebugOutput)
+      botOutput(username, 'Debug Mode Disabled')
+      debug = false
+      return
+    } else {
+      bot.once('spawn', DebugOutput)
+      botOutput(username, 'Debug Mode Enabled')
+      debug = true
+      return
+    }
+  }
+  
 }
 
 /* bot.on('physicTick', async () => {

@@ -30,6 +30,7 @@ let viewer = {
   port: getRandomInt(3000,4001)
 }
 let debug = false // 디버그 모드 설정
+let block = new Block(1,1,0) // 선택 블록 설정
 let mcData,defaultMove;
 
 bot.loadPlugin(pathfinder)
@@ -198,6 +199,18 @@ function botCommand (username, message) {
     return
   }
   
+  if (cmd == 'select') {
+    let player = bot.players[username].entity
+    if (username == console) { botOutput(username, 'Can\'t select block with Console'); return }
+    if (!player) { botOutput(username, 'Can\'t see ' + player?.username); return }
+    botOutput(username, 'Please Click a block for select')
+    selectBlock()
+    return
+  }
+  
+  if (cmd == 'open') {
+    
+  
   if (cmd == 'debug') {
     if (debug) {
       bot.removeListener('spawn', DebugOutput)
@@ -240,6 +253,15 @@ function botFollow(player) {
 
 function botStopFollow() {
   bot.pathfinder.setGoal(null)
+}
+
+// 블록 선택 (테스트 필요)
+async function selectBlock() {
+  bot.once('diggingAborted', await (target) => {
+    block = target.clone()
+  })
+  botOutput(username, 'Target Block set to ' + block.name)
+  return
 }
 
 // 봇 출력 (콘솔 포함)

@@ -209,7 +209,9 @@ function botCommand (username, message) {
   }
   
   if (cmd == 'open') {
-    
+    botOutput(username, 'Developing')
+    return
+  }
   
   if (cmd == 'debug') {
     if (debug) {

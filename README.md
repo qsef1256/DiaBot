@@ -52,7 +52,6 @@ Type without / in a whisper or console.
 
 ## Known Issue
 * Closing the inventory is not reflected immediately. Please refresh in your browser.
-* Movement function works normally after respawning. I think it's a mineflayer bug, and it has been reported in the mineflayer repository.
 
 ## Disclaimer
 This bot is unstable. This bot is for developing plugins/scripts that require additional players in the development environment.

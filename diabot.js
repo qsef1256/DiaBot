@@ -258,12 +258,11 @@ function botStopFollow() {
 }
 
 // 블록 선택 (테스트 필요)
-async function selectBlock() {
-  bot.once('diggingAborted', await (target) => {
+function selectBlock() {
+  bot.once('diggingAborted', (target) => {
     block = target.clone()
+    botOutput(username, 'Target Block set to ' + block.name)
   })
-  botOutput(username, 'Target Block set to ' + block.name)
-  return
 }
 
 // 봇 출력 (콘솔 포함)

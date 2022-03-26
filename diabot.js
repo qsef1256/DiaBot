@@ -2,50 +2,54 @@
 // Author: qsef1256
 
 const mineflayer = require('mineflayer')
-const readline = require('readline');
-const inventoryViewer = require('mineflayer-web-inventory')
-const { pathfinder, Movements } = require('mineflayer-pathfinder')
-const { GoalNear, GoalBlock, GoalXZ, GoalY, GoalInvert, GoalFollow, GoalBreakBlock } = require('mineflayer-pathfinder').goals
-const armorManager = require('mineflayer-armor-manager')
-const pvp = require('mineflayer-pvp').plugin
+const readline = require('readline')
 
 const options = {
-  host: 'localhost',
-  port: 25565,
   username: process.argv[2],
-  password: process.argv[3],
-  version: "1.17.1"
+  password: !process.argv[3] ? process.argv[4] : null,
+  version: !process.argv[4] ? process.argv[4] : null,
+  host: !process.argv[5] ? process.argv[5] : "localhost",
+  port: !process.argv[6] ? process.argv[6] : 25565
 }
 
 const bot = mineflayer.createBot(options)
 const owner = 'qsef1256'
 const version = '0.45.1'
 
+const inventoryViewer = require('mineflayer-web-inventory')
+const { pathfinder, Movements } = require('mineflayer-pathfinder')
+const { GoalNear, GoalBlock, GoalXZ, GoalY, GoalInvert, GoalFollow, GoalBreakBlock } = require('mineflayer-pathfinder').goals
+const armorManager = require('mineflayer-armor-manager')
+const pvp = require('mineflayer-pvp').plugin
+// const Block = require('prismarine-block')(bot.version)
+
 const rl = readline.createInterface({ // 터미널 입력
   input: process.stdin,
   output: process.stdout,
-});
+})
 
 let viewer = {
   port: getRandomInt(3000,4001)
 }
-let debug = false // 디버그 모드 설정
-let block = new Block(1,1,0) // 선택 블록 설정
-let mcData,defaultMove;
+let debug = true // 디버그 모드 설정
+// let block = new Block(1,1,0) // 선택 블록 설정
+let mcData, defaultMove
 
 bot.loadPlugin(pathfinder)
-bot.loadPlugin(armorManager);
+bot.loadPlugin(armorManager)
 bot.loadPlugin(pvp)
 inventoryViewer(bot, viewer) // 인벤토리 뷰어
 
-
 rl.on('line', (input) => {
   botCommand(console,input)
-});
+})
 
-bot.on('inject_allowed', () => {
-  mcData = require('minecraft-data')(1.17)
-  defaultMove = new Movements(bot, mcData)
+bot.on('spawn', () => {
+  sleep(500).then(() => {
+    mcData = require('minecraft-data')(bot.version)
+    defaultMove = new Movements(bot, mcData)
+    bot.entity = bot.players[bot.username].entity
+  })
 })
 
 // 에센셜 채팅 귓말
@@ -66,6 +70,8 @@ bot.once('spawn', () => {
 // 디버그 정보 출력
 
 function DebugOutput() {
+  console.log('bot.version: ' + bot.version)
+
   bot.on('path_update', (r) => {
     const nodesPerTick = (r.visitedNodes * 50 / r.time).toFixed(2)
     console.log(`I can get there in ${r.path.length} moves. Computation took ${r.time.toFixed(2)} ms (${r.visitedNodes} nodes, ${nodesPerTick} nodes/tick)`)
@@ -134,11 +140,17 @@ function botCommand (username, message) {
     return
   }
 
+  if (cmd == 'webinv' || cmd == 'showinv') {
+    botOutput(username, "Open web inventory")
+    openWeb("http://localhost:" + viewer.port)
+  }
+
   if (cmd == 'hand' || cmd =='hotbar') {
     if(!arg[1]) { botOutput(username, 'Change Quickbar Slot must be need a slot'); return }
     if(arg[1] < 0 || arg[1] > 8) { botOutput(username, 'Invaild slot'); return }
     botOutput(username, 'Change hands to slot ' + arg[1])
     bot.setQuickBarSlot(arg[1])
+    return
   }
 
   if (cmd == 'unequip') {
@@ -177,7 +189,7 @@ function botCommand (username, message) {
   }
 
   if (cmd == 'fight') {
-    let target = null;
+    let target = null
     if(!arg[1]) {
       if (username == console) { botOutput(username, 'Can\'t fight with Console'); return }
       target = bot.players[username].entity
@@ -316,10 +328,15 @@ bot.on('message', (message, position) => {
   }
 })
 
-bot.on('kicked', console.warn)
+bot.on('kicked', (reason, loggedIn) => {
+    console.log("kicked: " + JSON.parse(reason).text)
+  }
+)
+
 bot.on('error', console.log)
-bot.on('end', () => {
-  console.log('Disconnected from Server')
+bot.on('end', (reason) => {
+  console.log('disconnected: ' + JSON.parse(reason).text)
+  console.log("Disconnected from Server")
   closeBot()
 })
 
@@ -330,8 +347,37 @@ function closeBot() {
   process.exit()
 }
 
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms))
+}
+
 function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //최댓값은 제외, 최솟값은 포함
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min)) + min //최댓값은 제외, 최솟값은 포함
+}
+
+// 웹 브라우저 열기
+const { platform } = require('os')
+const { exec } = require('child_process')
+
+const WINDOWS_PLATFORM = 'win32'
+const MAC_PLATFORM = 'darwin'
+
+const osPlatform = platform()
+
+function openWeb(url) {
+  let command
+
+  console.log(`Open web url as Chrome: ${url}`)
+
+  if (osPlatform === WINDOWS_PLATFORM) {
+    command = `start chrome ${url}`
+  } else if (osPlatform === MAC_PLATFORM) {
+    command = `open -a "Google Chrome" ${url}`
+  } else {
+    command = `google-chrome ${url}`
+  }
+
+  exec(command)
 }

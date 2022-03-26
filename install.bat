@@ -8,10 +8,12 @@ if not "%ERRORLEVEL%" == "0" goto errNode
 
 cd %~dp0
 set ver=0.45.1
+set link=https://github.com/qsef1256/DiaBot/
 title Diabot Installer %ver%
 echo.
 echo DiaBot Installer by qsef1256
 echo Version: %ver%
+echo Link: %link%
 echo.
 echo This installer installs DiaBot to the %~dp0.
 echo Enter Y if you want to install, otherwise N.
@@ -39,13 +41,24 @@ if exist "start.bat" (
     echo title Diabot %ver%>> start.bat
     echo set /p user="Enter username : ">> start.bat
     echo set /p pass="Enter password(optional) : ">> start.bat
+    echo set /p fast="Do you want start bot with fast start mode? [Y/N] : " >> start.bat
+    echo if /i "%%fast%%"=="n" ^( >> start.bat
+    echo     set /p version="Enter version : " >> start.bat
+    echo     set /p host="Enter host : " >> start.bat
+    echo     set /p port="Enter port : " >> start.bat
+    echo ^) >> start.bat
+    echo.>> start.bat
     echo if defined pass ^(>> start.bat
     echo     echo start Diabot %ver% with Online mode>> start.bat
     echo ^) else ^(>> start.bat
     echo     echo start Diabot %ver% with Offline mode>> start.bat
+    echo     set pass="null" >> start.bat
     echo ^)>> start.bat
+    echo.>>start.bat
+    echo if not defined host set host="null">>start.bat
+    echo if not defined port set port="null">>start.bat
     echo echo.>> start.bat
-    echo node diabot.js %%user%% %%pass%%>> start.bat
+    echo node diabot.js %%user%% %%pass%% %%version%% %%host%% %%port%%>> start.bat
     echo pause>> start.bat
 )
 
@@ -57,7 +70,7 @@ echo.
 echo Installation finished
 echo Run start.bat to run diabot.
 echo.
-echo Contact: https://github.com/qsef1256/DiaBot/
+echo Contact: %link%
 echo.
 pause
 goto stop
@@ -66,7 +79,7 @@ goto stop
 echo No Node.js installation detected. 
 echo Please install or repair Node.js.
 echo.
-echo Contact: https://github.com/qsef1256/DiaBot/
+echo Contact: %link%
 pause
 goto stop
 
@@ -74,7 +87,7 @@ goto stop
 echo There was a problem installing diabot.
 echo ERRORLEVEL: %ERRORLEVEL%
 echo.
-echo Contact: https://github.com/qsef1256/DiaBot/
+echo Contact: %link%
 pause
 goto stop
 

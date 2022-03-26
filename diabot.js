@@ -44,6 +44,8 @@ rl.on('line', (input) => {
   botCommand(console,input)
 })
 
+console.log(options)
+
 bot.on('spawn', () => {
   sleep(500).then(() => {
     mcData = require('minecraft-data')(bot.version)

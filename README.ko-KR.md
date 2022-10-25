@@ -28,6 +28,7 @@ Node.js와 마인크래프트 1.12 - 1.19
 | mineflayer-pvp |
 | mineflayer-pathfinder |
 | mineflayer-armor-manager |
+| get-port |
 
 Node.js를 깐 후 cmd.exe에서 각각 패키지마다 `npm install (package)`를 입력하는 것으로 수동 설치할 수 있습니다.
 

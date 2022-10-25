@@ -28,6 +28,7 @@ call npm install mineflayer-pathfinder
 call npm install mineflayer-web-inventory
 call npm install mineflayer-pvp
 call npm install mineflayer-armor-manager
+call npm install get-port
 if not "%ERRORLEVEL%" == "0" goto errInstall
 
 if exist "start.bat" (

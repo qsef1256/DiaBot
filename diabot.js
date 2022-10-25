@@ -1,5 +1,6 @@
 // Dia Minecraft Bot For Plugin/Skript Testing
 // Author: qsef1256
+import getPort from 'get-port'
 
 const mineflayer = require('mineflayer')
 const readline = require('readline')
@@ -29,7 +30,7 @@ const rl = readline.createInterface({ // 터미널 입력
 })
 
 let viewer = {
-  port: getRandomInt(3000, 4001)
+  port: await getPort({port: portNumbers(3001, 4000)})
 }
 
 let debug = true // 디버그 모드 설정

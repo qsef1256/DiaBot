@@ -7,7 +7,7 @@ node -v 2> Nul
 if not "%ERRORLEVEL%" == "0" goto errNode
 
 cd %~dp0
-set ver=0.45.1
+set ver=0.45.2
 set link=https://github.com/qsef1256/DiaBot/
 title Diabot Installer %ver%
 echo.
@@ -38,6 +38,7 @@ if exist "start.bat" (
     echo @echo off>> start.bat
     echo rem Diabot Starter by qsef1256>> start.bat
     echo.>> start.bat
+    echo @setlocal>> start.bat
     echo title Diabot %ver%>> start.bat
     echo set /p user="Enter username : ">> start.bat
     echo set /p pass="Enter password(optional) : ">> start.bat
@@ -46,7 +47,7 @@ if exist "start.bat" (
     echo     set /p version="Enter version : " >> start.bat
     echo     set /p host="Enter host : " >> start.bat
     echo     set /p port="Enter port : " >> start.bat
-    echo ^) >> start.bat
+    echo ^)>> start.bat
     echo.>> start.bat
     echo if defined pass ^(>> start.bat
     echo     echo start Diabot %ver% with Online mode>> start.bat
@@ -54,12 +55,17 @@ if exist "start.bat" (
     echo     echo start Diabot %ver% with Offline mode>> start.bat
     echo     set pass="null" >> start.bat
     echo ^)>> start.bat
-    echo.>>start.bat
-    echo if not defined host set host="null">>start.bat
-    echo if not defined port set port="null">>start.bat
+    echo.>> start.bat
+    echo if not defined host set host="null">> start.bat
+    echo if not defined port set port="null">> start.bat
     echo echo.>> start.bat
+    echo ^:start >> start.bat
     echo node diabot.js %%user%% %%pass%% %%version%% %%host%% %%port%%>> start.bat
-    echo pause>> start.bat
+    echo set /p yn="Restart bot? [Y/N] : ">> start.bat
+    echo if /i "%%yn%%"=="y" ^(>> start.bat
+    echo    goto start>> start.bat
+    echo ^)>> start.bat
+    echo @endlocal>> start.bat
 )
 
 :finish

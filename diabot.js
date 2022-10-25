@@ -6,15 +6,15 @@ const readline = require('readline')
 
 const options = {
   username: process.argv[2],
-  password: !process.argv[3] ? process.argv[4] : null,
-  version: !process.argv[4] ? process.argv[4] : null,
-  host: !process.argv[5] ? process.argv[5] : "localhost",
-  port: !process.argv[6] ? process.argv[6] : 25565
+  password: !process.argv[3] ? null : process.argv[3],
+  version: !process.argv[4] ? null : process.argv[4],
+  host: !process.argv[5] ? "localhost" : process.argv[5],
+  port: !process.argv[6] ? 25565 : process.argv[6]
 }
 
 const bot = mineflayer.createBot(options)
 const owner = 'qsef1256'
-const version = '0.45.1'
+const version = '0.45.2'
 
 const inventoryViewer = require('mineflayer-web-inventory')
 const { pathfinder, Movements } = require('mineflayer-pathfinder')
@@ -29,8 +29,9 @@ const rl = readline.createInterface({ // 터미널 입력
 })
 
 let viewer = {
-  port: getRandomInt(3000,4001)
+  port: getRandomInt(3000, 4001)
 }
+
 let debug = true // 디버그 모드 설정
 // let block = new Block(1,1,0) // 선택 블록 설정
 let mcData, defaultMove
@@ -41,7 +42,7 @@ bot.loadPlugin(pvp)
 inventoryViewer(bot, viewer) // 인벤토리 뷰어
 
 rl.on('line', (input) => {
-  botCommand(console,input)
+  botCommand(console, input)
 })
 
 console.log(options)
@@ -56,13 +57,13 @@ bot.on('spawn', () => {
 
 // 에센셜 채팅 귓말
 bot.once('spawn', () => {
-  
+
   bot.chatAddPattern(
     /^\[(.+) -> .+\] (.+)$/,
     'whisper'
   )
   bot.on('whisper', botCommand)
-  
+
 })
 
 /* bot.on('windowOpen', (window) => {
@@ -89,7 +90,7 @@ function DebugOutput() {
 }
 
 // 인게임 명령어
-function botCommand (username, message) {
+function botCommand(username, message) {
 
   if (!(username == owner || username == console)) return
   if (username === bot.username) return
@@ -99,7 +100,11 @@ function botCommand (username, message) {
   let arg = message.split(' ') // command 분리
   let cmd = arg[0]
 
-  if (cmd =='quit' || cmd == "exit") {
+  if (cmd == 'help') {
+    botOutput(username, 'Check Diabot\'s command list here: https://github.com/qsef1256/DiaBot')
+  }
+
+  if (cmd == 'quit' || cmd == "exit") {
     botOutput(username, 'Quit by ' + username)
     closeBot()
     return
@@ -115,7 +120,7 @@ function botCommand (username, message) {
     bot.chat(message.substring(5))
     return
   }
- 
+
   if (cmd == 'close') {
     botOutput(username, 'Inventory closed')
     bot.closeWindow(bot.inventory)
@@ -125,15 +130,15 @@ function botCommand (username, message) {
   if (cmd == 'click') {
     const slotCount = bot.inventory.slots.length - 1
     if (!arg[1]) { botOutput(username, 'Click must be need a slot'); return }
-    if(slotCount < arg[1] || arg[1] < 0) { botOutput(username, 'Can\'t click input slot'); return }
+    if (slotCount < arg[1] || arg[1] < 0) { botOutput(username, 'Can\'t click input slot'); return }
     bot.simpleClick.leftMouse(arg[1])
     return
   }
 
   if (cmd == 'inv' || cmd == 'swap') {
     const slotCount = bot.inventory.slots.length - 1
-    if(!arg[2]) { botOutput(username, 'Move Item must be need slot and destination'); return }
-    if(slotCount < arg[1] || slotCount < arg[2] || arg[1] < 0 || arg[2] < 0 ) {
+    if (!arg[2]) { botOutput(username, 'Move Item must be need slot and destination'); return }
+    if (slotCount < arg[1] || slotCount < arg[2] || arg[1] < 0 || arg[2] < 0) {
       botOutput(username, 'Can\'t move input slot')
       return
     }
@@ -147,9 +152,9 @@ function botCommand (username, message) {
     openWeb("http://localhost:" + viewer.port)
   }
 
-  if (cmd == 'hand' || cmd =='hotbar') {
-    if(!arg[1]) { botOutput(username, 'Change Quickbar Slot must be need a slot'); return }
-    if(arg[1] < 0 || arg[1] > 8) { botOutput(username, 'Invaild slot'); return }
+  if (cmd == 'hand' || cmd == 'hotbar') {
+    if (!arg[1]) { botOutput(username, 'Change Quickbar Slot must be need a slot'); return }
+    if (arg[1] < 0 || arg[1] > 8) { botOutput(username, 'Invaild slot'); return }
     botOutput(username, 'Change hands to slot ' + arg[1])
     bot.setQuickBarSlot(arg[1])
     return
@@ -171,14 +176,14 @@ function botCommand (username, message) {
 
   if (cmd == 'follow') {
     let target = null
-    if(!arg[1]) {
+    if (!arg[1]) {
       if (username == console) { botOutput(username, 'Can\'t Follow Console'); return }
       target = bot.players[username].entity
     } else {
       target = bot.players[arg[1]].entity
     }
 
-    if(!target) { botOutput(username, 'Can\'t see ' + target?.username); return }
+    if (!target) { botOutput(username, 'Can\'t see ' + target?.username); return }
     botOutput(username, 'Start Following ' + target.username)
     botFollow(target)
     return
@@ -192,14 +197,14 @@ function botCommand (username, message) {
 
   if (cmd == 'fight') {
     let target = null
-    if(!arg[1]) {
+    if (!arg[1]) {
       if (username == console) { botOutput(username, 'Can\'t fight with Console'); return }
       target = bot.players[username].entity
     } else {
       target = bot.players[arg[1]].entity
     }
 
-    if(!target) { botOutput(username, 'Can\'t see' + target?.username); return }
+    if (!target) { botOutput(username, 'Can\'t see' + target?.username); return }
     botOutput(username, 'Start PVP with ' + player.username)
     botFollow(target)
     bot.pvp.attack(target)
@@ -212,7 +217,7 @@ function botCommand (username, message) {
     bot.pvp.stop()
     return
   }
-  
+
   if (cmd == 'select') {
     let player = bot.players[username].entity
     if (username == console) { botOutput(username, 'Can\'t select block with Console'); return }
@@ -221,12 +226,12 @@ function botCommand (username, message) {
     selectBlock()
     return
   }
-  
+
   if (cmd == 'open') {
     botOutput(username, 'Developing')
     return
   }
-  
+
   if (cmd == 'debug') {
     if (debug) {
       bot.removeListener('spawn', DebugOutput)
@@ -240,7 +245,7 @@ function botCommand (username, message) {
       return
     }
   }
-  
+
 }
 
 /* bot.on('physicTick', async () => {
@@ -280,7 +285,7 @@ function selectBlock() {
 }
 
 // 봇 출력 (콘솔 포함)
-function botOutput(username, message) { 
+function botOutput(username, message) {
   if (username == console) {
     console.log(message)
   } else {
@@ -300,17 +305,17 @@ async function botUnequip() {
 // 엔티티 바라보기
 bot.once('spawn', function () {
   setInterval(() => {
-  const entity = bot.nearestEntity()
-  if (entity !== null && !bot.pathfinder.isMoving()) {
-    if (entity.type === 'player') {
-      bot.lookAt(entity.position.offset(0, 1.6, 0))
-    } else if (entity.type === 'mob') {
-      bot.lookAt(entity.position.offset(0, entity.height -0.5 ,0))
-    } else if (entity.type === 'object') {
-      bot.lookAt(entity.position)
+    const entity = bot.nearestEntity()
+    if (entity !== null && !bot.pathfinder.isMoving()) {
+      if (entity.type === 'player') {
+        bot.lookAt(entity.position.offset(0, 1.6, 0))
+      } else if (entity.type === 'mob') {
+        bot.lookAt(entity.position.offset(0, entity.height - 0.5, 0))
+      } else if (entity.type === 'object') {
+        bot.lookAt(entity.position)
+      }
     }
-  }
-}, 50)
+  }, 50)
 })
 
 // 칼 차기
@@ -331,8 +336,8 @@ bot.on('message', (message, position) => {
 })
 
 bot.on('kicked', (reason, loggedIn) => {
-    console.log("kicked: " + JSON.parse(reason).text)
-  }
+  console.log("kicked: " + JSON.parse(reason).text)
+}
 )
 
 bot.on('error', console.log)

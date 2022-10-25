@@ -364,22 +364,6 @@ function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms))
 }
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min)) + min //최댓값은 제외, 최솟값은 포함
-}
-
-async function getPortFree() {
-    return new Promise( res => {
-        const srv = net.createServer();
-        srv.listen(0, () => {
-            const port = srv.address().port
-            srv.close((err) => res(port))
-        });
-    })
-}
-
 // 웹 브라우저 열기
 const { platform } = require('os')
 const { exec } = require('child_process')

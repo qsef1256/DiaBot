@@ -1,9 +1,9 @@
 // Dia Minecraft Bot For Plugin/Skript Testing
 // Author: qsef1256
-import getPort from 'get-port'
 
 const mineflayer = require('mineflayer')
 const readline = require('readline')
+const portscanner = require('portscanner')
 
 const options = {
   username: process.argv[2],
@@ -29,8 +29,13 @@ const rl = readline.createInterface({ // 터미널 입력
   output: process.stdout,
 })
 
+var freePort
+portscanner.findAPortNotInUse(3001, 4000, '127.0.0.1', function(error, port) {
+  freePort = port
+})
+
 let viewer = {
-  port: await getPort({port: portNumbers(3001, 4000)})
+  port: freePort
 }
 
 let debug = true // 디버그 모드 설정
@@ -363,6 +368,16 @@ function getRandomInt(min, max) {
   min = Math.ceil(min)
   max = Math.floor(max)
   return Math.floor(Math.random() * (max - min)) + min //최댓값은 제외, 최솟값은 포함
+}
+
+async function getPortFree() {
+    return new Promise( res => {
+        const srv = net.createServer();
+        srv.listen(0, () => {
+            const port = srv.address().port
+            srv.close((err) => res(port))
+        });
+    })
 }
 
 // 웹 브라우저 열기

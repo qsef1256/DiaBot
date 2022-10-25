@@ -28,7 +28,7 @@ Not tested on 1.8 - 1.12.
 | mineflayer-pvp |
 | mineflayer-pathfinder |
 | mineflayer-armor-manager |
-| get-port |
+| portscanner |
 
 For manual install Node packages, Type `npm install (package)` in cmd.exe.
 

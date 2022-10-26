@@ -8,7 +8,7 @@ const portscanner = require('portscanner')
 const options = {
   username: process.argv[2],
   password: !process.argv[3] ? null : process.argv[3],
-  version: !process.argv[4] ? null : process.argv[4],
+  version: !process.argv[4] ? "1.19.2" : process.argv[4],
   host: !process.argv[5] ? "localhost" : process.argv[5],
   port: !process.argv[6] ? 25565 : process.argv[6]
 }

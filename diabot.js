@@ -211,7 +211,7 @@ function botCommand(username, message) {
     }
 
     if (!target) { botOutput(username, 'Can\'t see' + target?.username); return }
-    botOutput(username, 'Start PVP with ' + player.username)
+    botOutput(username, 'Start PVP with ' + target.username)
     botFollow(target)
     bot.pvp.attack(target)
     return

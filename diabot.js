@@ -29,15 +29,6 @@ const rl = readline.createInterface({ // 터미널 입력
   output: process.stdout,
 })
 
-var freePort
-portscanner.findAPortNotInUse(3001, 4000, '127.0.0.1', function(error, port) {
-  freePort = port
-})
-
-let viewer = {
-  port: freePort
-}
-
 let debug = true // 디버그 모드 설정
 // let block = new Block(1,1,0) // 선택 블록 설정
 let mcData, defaultMove
@@ -45,7 +36,15 @@ let mcData, defaultMove
 bot.loadPlugin(pathfinder)
 bot.loadPlugin(armorManager)
 bot.loadPlugin(pvp)
-inventoryViewer(bot, viewer) // 인벤토리 뷰어
+portscanner
+  .findAPortNotInUse(3001, 4000, '127.0.0.1')
+  .then(function (port) {
+    let viewer = {
+      port: port
+    }
+
+    inventoryViewer(bot, viewer) // 인벤토리 뷰어
+  })
 
 rl.on('line', (input) => {
   botCommand(console, input)

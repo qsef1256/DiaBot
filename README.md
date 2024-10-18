@@ -60,7 +60,8 @@ The default start settings for fast start mode are:
 |------|------------|
 | host | localhost |
 | port | 25565 |
-| version | Latest Release |
+| version | 1.20.4 |
+| auth-method | microsoft |
 
 ## Command
 

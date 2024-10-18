@@ -60,7 +60,8 @@ Node.js를 깐 후 cmd.exe에서 각각 패키지마다 `npm install (package)`�
 |------|-----------|
 | host | localhost |
 | port | 25565 |
-| version | 최신 정식 버전 |
+| version | 1.20.4 |
+| auth-method | microsoft |
 
 ## 명령어
 

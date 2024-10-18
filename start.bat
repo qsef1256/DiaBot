@@ -2,29 +2,31 @@
 rem Diabot Starter by qsef1256
 
 @setlocal
-title Diabot 0.45.2
+title Diabot 0.5.0
 set /p user="Enter username : "
-set /p pass="Enter password(optional) : "
-set /p fast="Do you want start bot with fast start mode? [Y/N] : " 
+set /p online="Online Mode [y/n] : "
+set /p fast="Do you want start bot with fast start mode? [y/n] : " 
 if /i "%fast%"=="n" ( 
     set /p version="Enter version : " 
     set /p host="Enter host : " 
     set /p port="Enter port : " 
 )
 
-if defined pass (
-    echo start Diabot 0.45.2 with Online mode
+if "%online%"=="y" (
+    echo start Diabot 0.5.0 with Online mode
+    set auth="microsoft"
 ) else (
-    echo start Diabot 0.45.2 with Offline mode
-    set pass="null" 
+    echo start Diabot 0.5.0 with Offline mode
+    set auth="offline"
 )
 
 if not defined host set host="null"
 if not defined port set port="null"
+
 echo.
 :start 
-node diabot.js %user% %pass% %version% %host% %port%
-set /p yn="Restart bot? [Y/N] : "
+node diabot.js %user% %version% %host% %port% %auth%
+set /p yn="Restart bot? [y/n] : "
 if /i "%yn%"=="y" (
    goto start
 )

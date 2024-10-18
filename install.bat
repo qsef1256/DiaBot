@@ -7,7 +7,7 @@ node -v 2> Nul
 if not "%ERRORLEVEL%" == "0" goto errNode
 
 cd %~dp0
-set ver=0.45.2
+set ver=0.5.0
 set link=https://github.com/qsef1256/DiaBot/
 title Diabot Installer %ver%
 echo.
@@ -29,6 +29,7 @@ call npm install mineflayer-web-inventory
 call npm install mineflayer-pvp
 call npm install mineflayer-armor-manager
 call npm install portscanner
+call npm install node-clipboardy
 if not "%ERRORLEVEL%" == "0" goto errInstall
 
 if exist "start.bat" (
@@ -42,27 +43,29 @@ if exist "start.bat" (
     echo @setlocal>> start.bat
     echo title Diabot %ver%>> start.bat
     echo set /p user="Enter username : ">> start.bat
-    echo set /p pass="Enter password(optional) : ">> start.bat
-    echo set /p fast="Do you want start bot with fast start mode? [Y/N] : " >> start.bat
-    echo if /i "%%fast%%"=="n" ^( >> start.bat
-    echo     set /p version="Enter version : " >> start.bat
-    echo     set /p host="Enter host : " >> start.bat
-    echo     set /p port="Enter port : " >> start.bat
+    echo set /p online="Online Mode [y/n] : ">> start.bat
+    echo set /p fast="Do you want start bot with fast start mode? [y/n] : ">> start.bat
+    echo if /i "%%fast%%"=="n" ^(>> start.bat
+    echo     set /p version="Enter version : ">> start.bat
+    echo     set /p host="Enter host : ">> start.bat
+    echo     set /p port="Enter port : ">> start.bat
     echo ^)>> start.bat
     echo.>> start.bat
-    echo if defined pass ^(>> start.bat
+    echo if "%%online%%"=="y" ^(>> start.bat
     echo     echo start Diabot %ver% with Online mode>> start.bat
+    echo     set auth="microsoft">> start.bat
     echo ^) else ^(>> start.bat
     echo     echo start Diabot %ver% with Offline mode>> start.bat
-    echo     set pass="null" >> start.bat
+    echo     set auth="offline">> start.bat
     echo ^)>> start.bat
     echo.>> start.bat
     echo if not defined host set host="null">> start.bat
     echo if not defined port set port="null">> start.bat
+    echo.>> start.bat
     echo echo.>> start.bat
     echo ^:start >> start.bat
-    echo node diabot.js %%user%% %%pass%% %%version%% %%host%% %%port%%>> start.bat
-    echo set /p yn="Restart bot? [Y/N] : ">> start.bat
+    echo node diabot.js %%user%% %%version%% %%host%% %%port%% %%auth%%>> start.bat
+    echo set /p yn="Restart bot? [y/n] : ">> start.bat
     echo if /i "%%yn%%"=="y" ^(>> start.bat
     echo    goto start>> start.bat
     echo ^)>> start.bat

@@ -3,19 +3,24 @@
 
 const mineflayer = require('mineflayer')
 const readline = require('readline')
+const clipboardy = require('node-clipboardy')
 const portscanner = require('portscanner')
 
+const argv = process.argv
 const options = {
-  username: process.argv[2],
-  password: !process.argv[3] ? null : process.argv[3],
-  version: !process.argv[4] ? "1.19.2" : process.argv[4],
-  host: !process.argv[5] ? "localhost" : process.argv[5],
-  port: !process.argv[6] ? 25565 : process.argv[6]
+  username: argv[2],
+  version: !argv[3] ? '1.20.4' : argv[3],
+  host: !argv[4] ? 'localhost' : argv[4],
+  port: !argv[5] ? 25565 : argv[5],
+  auth: !argv[6] ? 'microsoft' : argv[6],
+  brand: 'diabot',
+  hideErrors: false,
+  disableChatSigning: true,
 }
 
 const bot = mineflayer.createBot(options)
 const owner = 'qsef1256'
-const version = '0.45.2'
+const version = '0.5.0'
 
 const inventoryViewer = require('mineflayer-web-inventory')
 const { pathfinder, Movements } = require('mineflayer-pathfinder')
@@ -31,7 +36,7 @@ const rl = readline.createInterface({ // 터미널 입력
 
 let debug = true // 디버그 모드 설정
 // let block = new Block(1,1,0) // 선택 블록 설정
-let mcData, defaultMove
+let mcData;
 
 bot.loadPlugin(pathfinder)
 bot.loadPlugin(armorManager)
@@ -50,53 +55,44 @@ rl.on('line', (input) => {
   botCommand(console, input)
 })
 
-console.log(options)
+// Paste
+rl.input.on('keypress', async (char, key) => {
+  if (key && key.ctrl && key.name === 'v') {
+    try {
+      const clipboardText = await clipboardy.read();
+      rl.write(clipboardText);
+    } catch (error) {
+      console.error('Failed to paste from clipboard', error);
+    }
+  }
+});
+
+console.log('Starting DiaBot with ' + version)
 
 bot.on('spawn', () => {
   sleep(500).then(() => {
     mcData = require('minecraft-data')(bot.version)
     defaultMove = new Movements(bot, mcData)
     bot.entity = bot.players[bot.username].entity
+    bot.physicsEnabled = true
   })
 })
 
 // 에센셜 채팅 귓말
 bot.once('spawn', () => {
-
-  bot.chatAddPattern(
-    /^\[(.+) -> .+\] (.+)$/,
-    'whisper'
-  )
   bot.on('whisper', botCommand)
+})
 
+bot.on('login', () => {
+  console.log(bot.username + ' joined ' + options.host + ':' + options.port)
 })
 
 /* bot.on('windowOpen', (window) => {
   console.log("Inventory title: " + window.title)
 }) */
 
-// 디버그 정보 출력
-
-function DebugOutput() {
-  console.log('bot.version: ' + bot.version)
-
-  bot.on('path_update', (r) => {
-    const nodesPerTick = (r.visitedNodes * 50 / r.time).toFixed(2)
-    console.log(`I can get there in ${r.path.length} moves. Computation took ${r.time.toFixed(2)} ms (${r.visitedNodes} nodes, ${nodesPerTick} nodes/tick)`)
-  })
-
-  bot.on('goal_reached', (goal) => {
-    console.log('Here I am !')
-  })
-
-  bot.on('path_reset', (reason) => {
-    console.log(`Path was reset for reason: ${reason}`)
-  })
-}
-
 // 인게임 명령어
 function botCommand(username, message) {
-
   if (!(username == owner || username == console)) return
   if (username === bot.username) return
 
@@ -107,6 +103,7 @@ function botCommand(username, message) {
 
   if (cmd == 'help') {
     botOutput(username, 'Check Diabot\'s command list here: https://github.com/qsef1256/DiaBot')
+    return
   }
 
   if (cmd == 'quit' || cmd == "exit") {
@@ -154,7 +151,8 @@ function botCommand(username, message) {
 
   if (cmd == 'webinv' || cmd == 'showinv') {
     botOutput(username, "Open web inventory")
-    openWeb("http://localhost:" + viewer.port)
+    openWeb('http://localhost:' + bot.webInventory.options.port)
+    return
   }
 
   if (cmd == 'hand' || cmd == 'hotbar') {
@@ -251,18 +249,26 @@ function botCommand(username, message) {
     }
   }
 
-}
-
-/* bot.on('physicTick', async () => {
-  if(!target) { return }
-  try {
-    await bot.pathfinder.goto(new goals.GoalNear(target.position.x,target.position.y,target.position.z,2) ,(err) => {
-      console.log(err)
-    })
-  } catch (e) {
-    console.warn(e)
+  if (cmd == 'options') {
+    console.log(options)
+    return
   }
-}) */
+
+  if (cmd == 'schedule') {
+    if (!arg[1]) { botOutput(username, 'Schedule must be need a date'); return }
+
+    let date = new Date(arg[1])
+    let newCommand = arg.slice()
+    newCommand.shift()
+    newCommand.shift()
+    
+    schedule(() => {
+      botCommand(username, newCommand.join(' '))
+    }, date)
+    return
+  }
+
+}
 
 function botCome(player) {
   if (player == bot.player) { return }
@@ -307,6 +313,17 @@ async function botUnequip() {
   await bot.unequip("off-hand")
 }
 
+function schedule(task, targetDate) {
+  const now = new Date();
+  const delay = targetDate - now;
+
+  if (delay > 0) {
+      setTimeout(task, delay);
+  } else {
+      console.error("Target date must be in the future");
+  }
+}
+
 // 엔티티 바라보기
 bot.once('spawn', function () {
   setInterval(() => {
@@ -328,27 +345,34 @@ bot.on('playerCollect', (collector) => {
   if (collector !== bot.entity) return
 
   setTimeout(() => {
-    const sword = bot.inventory.items().find(item => item.name.includes('sword'))
-    if (sword) bot.equip(sword, 'hand')
+    const sword = bot.inventory
+        .items()
+        .find(item => item.name.includes('sword'))
+    if (sword) 
+      bot.equip(sword, 'hand')
   }, 150)
 })
 
 // 메시지 콘솔에 전달
 bot.on('message', (message, position) => {
-  if (position == 'system') {
-    console.log(message.toAnsi())
-  }
+  if (position == 'gameinfo') return
+
+  let result = ''
+  let playerName = message.extra?.[0].json[''] // idk but player name from message is corrupted
+
+  if (playerName) result += playerName
+  result += message.toAnsi()
+
+  console.log(result)
 })
 
 bot.on('kicked', (reason, loggedIn) => {
-  console.log("kicked: " + JSON.parse(reason).text)
-}
-)
+  console.log('Kicked: ' + reason)
+})
 
 bot.on('error', console.log)
 bot.on('end', (reason) => {
-  console.log('disconnected: ' + JSON.parse(reason).text)
-  console.log("Disconnected from Server")
+  console.log('Disconnected: ' + reason)
   closeBot()
 })
 
@@ -386,4 +410,22 @@ function openWeb(url) {
   }
 
   exec(command)
+}
+
+// 디버그 정보 출력
+function DebugOutput() {
+  console.log('bot.version: ' + bot.version)
+
+  bot.on('path_update', (r) => {
+    const nodesPerTick = (r.visitedNodes * 50 / r.time).toFixed(2)
+    console.log(`I can get there in ${r.path.length} moves. Computation took ${r.time.toFixed(2)} ms (${r.visitedNodes} nodes, ${nodesPerTick} nodes/tick)`)
+  })
+
+  bot.on('goal_reached', (goal) => {
+    console.log('Here I am !')
+  })
+
+  bot.on('path_reset', (reason) => {
+    console.log(`Path was reset for reason: ${reason}`)
+  })
 }

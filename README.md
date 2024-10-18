@@ -13,11 +13,12 @@ A [mineflayer](https://github.com/PrismarineJS/mineflayer) Bot for Plugin/Skript
 * Show Bot Inventory on Web
 * Move and Follow
 * PvP
+* Console with Paste
 * Please post if you need other features
 
 ## Dependency
 
-Node.js and Minecraft 1.12 - 1.19
+Node.js and Minecraft 1.12 - 1.21
 
 Not tested on 1.8 - 1.12.
 
@@ -29,6 +30,7 @@ Not tested on 1.8 - 1.12.
 | mineflayer-pathfinder |
 | mineflayer-armor-manager |
 | portscanner |
+| node-clipboardy |
 
 For manual install Node packages, Type `npm install (package)` in cmd.exe.
 
@@ -46,7 +48,7 @@ For manual install Node packages, Type `npm install (package)` in cmd.exe.
 1. Install Node.js and require Node packages
 2. Download diabot.js
 3. Open cmd.exe and Type `cd (path of diabot.js)`
-4. Type `node diabot.js (nickname) [password] [version] [(host) (port)]` (password is for online mode, Do not enter when used in offline mode.)
+4. Type `node diabot.js (nickname) [version] [(host) (port)] [(auth-method)]`
 
 ### Start.bat
 
@@ -63,6 +65,7 @@ The default start settings for fast start mode are:
 ## Command
 
 Type without / in a whisper or console.
+
 | Command | Usage | Description | Alias |
 |---------|-------|-------------|:-----:|
 | exit | exit | Make the bot leave the server. | quit |
@@ -80,6 +83,8 @@ Type without / in a whisper or console.
 | stop | stop | The bot will stop moving. | unfollow |
 | fight | fight [user] | Start PvP with the user. | - |
 | surrender | surrender | Bot will stop fighting. | sur |
+| schedule | schedule [date] [command] | Execute command when specified date. | - |
+| options | options | Show bot's currency start options. | - |
 
 ## Known Issue
 

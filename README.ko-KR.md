@@ -13,11 +13,12 @@
 * 브라우저에서 인벤토리 확인
 * 이동/따라오게 만들기
 * 싸움 붙이기
+* 봇 콘솔 (붙여넣기 지원)
 * 필요한 기능이 있으면 트래커에 올려주세요.
 
 ## 필요한 것
 
-Node.js와 마인크래프트 1.12 - 1.19
+Node.js와 마인크래프트 1.12 - 1.21
 
 1.8 - 1.12 이하 버전에서 테스트 되지 않았습니다.
 
@@ -29,6 +30,7 @@ Node.js와 마인크래프트 1.12 - 1.19
 | mineflayer-pathfinder |
 | mineflayer-armor-manager |
 | portscanner |
+| node-clipboardy |
 
 Node.js를 깐 후 cmd.exe에서 각각 패키지마다 `npm install (package)`를 입력하는 것으로 수동 설치할 수 있습니다.
 
@@ -46,7 +48,7 @@ Node.js를 깐 후 cmd.exe에서 각각 패키지마다 `npm install (package)`�
 1. Node.js를 깔고 필요한 패키지를 설치합니다.
 2. diabot.js를 원하는 위치에 다운로드 합니다.
 3. cmd.exe를 열고 `cd (diabot.js가 있는 경로)`를 입력합니다.
-4. cmd창에 `node diabot.js (nickname) [password] [version] [(host) (port)]`를 입력합니다. (password는 마인크래프트 계정 없이 실행할 경우 적지 마세요.)
+4. cmd창에 `node diabot.js (nickname) [version] [(host) (port)] [(auth-method)]`를 입력합니다.
 
 ### Start.bat
 
@@ -81,6 +83,8 @@ Node.js를 깐 후 cmd.exe에서 각각 패키지마다 `npm install (package)`�
 | stop | stop | 봇의 이동을 멈춥니다. | unfollow |
 | fight | fight [user] | 입력한 유저와 싸움을 시작합니다. | - |
 | surrender | surrender | 봇이 싸움을 중단합니다. | sur |
+| schedule | schedule [date] [command] | 특정 시점에 명령어를 실행합니다. | - |
+| options | options | 현재 봇의 실행 설정을 보여줍니다. | - |
 
 ## 알고 있는 문제
 

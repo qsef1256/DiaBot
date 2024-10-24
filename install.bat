@@ -7,7 +7,7 @@ node -v 2> Nul
 if not "%ERRORLEVEL%" == "0" goto errNode
 
 cd %~dp0
-set ver=0.5.0
+set ver=0.5.1
 set link=https://github.com/qsef1256/DiaBot/
 title Diabot Installer %ver%
 echo.

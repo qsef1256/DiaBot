@@ -76,6 +76,8 @@ Node.js를 깐 후 cmd.exe에서 각각 패키지마다 `npm install (package)`�
 | close | close | 봇의 인벤토리를 닫습니다. <br />(GUI인 경우 브라우저에 반영되지 않을 수 있습니다. 새로고침 하세요.) | - |
 | click | click [slot] | 인벤토리 슬롯을 클릭합니다. | - |
 | inv | inv [slot1] [slot2] | 봇의 인벤토리에 있는 두 슬롯의 아이템을 바꿉니다. | swap |
+| drop | drop | 봇이 들고 있는 아이템을 버립니다. | - |
+| dropAll | dropAll | 봇이 가지고 있는 아이템을 모두 버립니다. | - |
 | webinv | webinv | 크롬으로 인벤토리 뷰를 엽니다. | showinv |
 | hand | hand [slot] | 봇의 퀵바(현재 들고 있는 아이템)를 변경합니다. | hotbar |
 | unequip | unequip | 모든 갑옷과 장비를 해제합니다. | - |

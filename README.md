@@ -76,6 +76,8 @@ Type without / in a whisper or console.
 | close | close | Close the bot's inventory. <br />(It is not automatically updated on the web) | - |
 | click | click [slot] | The bot clicks on the bot's inventory. | - |
 | inv | inv [slot1] [slot2] | The bot exchanges items between the two slots. | swap |
+| drop | drop | Drop item on bot's quick slot. | - |
+| dropAll | dropAll | Drop all inventory items of bot. | - |
 | webinv | webinv | Open web inventory as Chrome. | showinv |
 | hand | hand [slot] | The bot switches the quickbar. | hotbar |
 | unequip | unequip | The bot will unequip all equipment. | - |

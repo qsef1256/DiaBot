@@ -20,7 +20,7 @@ const options = {
 
 const bot = mineflayer.createBot(options)
 const owner = 'qsef1256'
-const version = '0.5.0'
+const version = '0.5.1'
 
 const inventoryViewer = require('mineflayer-web-inventory')
 const { pathfinder, Movements } = require('mineflayer-pathfinder')
@@ -146,6 +146,18 @@ function botCommand(username, message) {
     }
     botOutput(username, 'Item Swapped ' + arg[1] + " and " + arg[2])
     bot.moveSlotItem(arg[1], arg[2])
+    return
+  }
+
+  if (cmd == 'drop') {
+    botDrop()
+
+    return
+  }
+
+  if (cmd == 'dropAll') {
+    botDropAll()
+
     return
   }
 
@@ -313,6 +325,18 @@ async function botUnequip() {
   await bot.unequip("off-hand")
 }
 
+// 템 버리기
+async function botDrop() {
+  bot.tossStack(bot.inventory.slots[bot.QUICK_BAR_START + bot.quickBarSlot]);
+}
+
+async function botDropAll() {
+  const items = bot.inventory.items()
+  for (let i = 0; i < items.length; i++) {
+    await bot.tossStack(items[i])
+  }
+}
+
 function schedule(task, targetDate) {
   const now = new Date();
   const delay = targetDate - now;
@@ -358,7 +382,7 @@ bot.on('message', (message, position) => {
   if (position == 'gameinfo') return
 
   let result = ''
-  let playerName = message.extra?.[0].json[''] // idk but player name from message is corrupted
+  let playerName = message.extra?.[0]?.json?.[''] // idk but player name from message is corrupted
 
   if (playerName) result += playerName
   result += message.toAnsi()

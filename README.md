@@ -1,6 +1,6 @@
 # DiaBot
 
-![Minecraft](https://img.shields.io/badge/Minecraft-1.12~1.19-{brightgreen}.svg)
+![Minecraft](https://img.shields.io/badge/Minecraft-1.12~1.21-{brightgreen}.svg)
 | <sub>EN</sub> [en-US](/README.md) | <sub>KO</sub> [ko-KR](README.ko-KR.md) |
 |---------------------|-----------------------|
 
